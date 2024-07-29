@@ -24,14 +24,15 @@ void SendDataMQTT (struct sensorData *environment)
   while (!client.connected()) {
     MonPrintf("Connecting to MQTT...");
 
-    if (client.connect("ESP32Client", mqttUser, mqttPassword))
+    //if (client.connect("ESP32Client", mqttUser, mqttPassword))
+    if (client.connect("ESP32Client"))
     {
       Serial.println("connected");
     }
     else
     {
       Serial.print("failed with state ");
-      Serial.print(client.state());
+      Serial.println(client.state());
       delay(1000);
     }
   }
@@ -103,7 +104,7 @@ void MQTTPublish(const char topic[], int value, bool retain)
 
 
 //=======================================================================
-//  MQTTPublish Long: routine to publish int values as strings
+//  MQTTPublishLong: routine to publish int values as strings
 //=======================================================================
 void MQTTPublish(const char topic[], long value, bool retain)
 {

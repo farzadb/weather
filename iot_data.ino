@@ -30,6 +30,8 @@ void sendData(struct sensorData *environment)
     Blynk.virtualWrite(V9, environment->batteryVoltage);
     Blynk.virtualWrite(V10, environment->lux);
     Blynk.virtualWrite(V11, bootCount);
+    float battPerc = ((environment->batteryVoltage - batteryLowVoltage) / (4.2 - batteryLowVoltage)) * 100;
+    Blynk.virtualWrite(V12, battPerc); 
     delay(1000);
   }
 

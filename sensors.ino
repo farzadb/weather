@@ -53,7 +53,7 @@ void readBattery (struct sensorData *environment)
 {
   environment->batteryADC = analogRead(VOLT_PIN);
   environment->batteryVoltage = environment->batteryADC * batteryCalFactor;
-  MonPrintf("Battery digital ADC :%i voltage: %6.2f\n", environment->batteryADC, environment->batteryVoltage);
+  MonPrintf("Battery digital ADC : %i voltage: %6.2f\n", environment->batteryADC, environment->batteryVoltage);
   //check for low battery situation
   if (environment->batteryVoltage < batteryLowVoltage)
   {
@@ -128,6 +128,7 @@ void readBME(struct sensorData *environment)
     environment->barometricPressure += ALTITUDE_OFFSET_IMPERIAL;
 #else
     bme.read(environment->barometricPressure, environment->BMEtemperature, environment->humidity, BME280::TempUnit_Celsius, BME280::PresUnit_Pa);
+    environment->barometricPressure /= 100; // convert form Pa to hPa
     environment->barometricPressure += ALTITUDE_OFFSET_METRIC;
 #endif
 
@@ -169,6 +170,7 @@ void readESPCoreTemp(struct sensorData *environment)
 
   environment->coreF = coreF;
   environment->coreC = coreC;
+  MonPrintf("ESPCore Temp: %f\n", environment->coreC);
 }
 
 

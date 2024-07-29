@@ -10,7 +10,6 @@ long wifi_connect()
   MonPrintf("Starting wifi for App = %s\n", App);
   if (App == "BLYNK")  // for posting datas to Blynk App
   {
-
     Blynk.begin(auth, ssid, pass);
   }
   else if ((App == "Thingspeak") || (App == "MQTT")) // for posting datas to Thingspeak website
@@ -19,10 +18,12 @@ long wifi_connect()
     WiFi.begin(ssid, pass);
     while (WiFi.status() != WL_CONNECTED && !WiFiConnectHalt )
     {
+      MonPrintf(".");
       delay(500);
       retry++;
       if (retry > 15)
       {
+        MonPrintf(".\n");
         MonPrintf("Max trys to connect to WiFi reached and failed");
         WiFiConnectHalt = true;
         wifi_signal = RSSI_INVALID;

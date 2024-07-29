@@ -79,9 +79,17 @@
 //OLED diagnostics board
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <Fonts/FreeMono9pt7b.h>
 
-#define OLED_RESET 4
-Adafruit_SSD1306 display(OLED_RESET);
+//#define OLED_RESET 4
+//Adafruit_SSD1306 display(OLED_RESET);
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+#define OLED_RESET     -1 
+#define SCREEN_ADDRESS 0x3C 
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 //===========================================
 // Defines
@@ -190,6 +198,12 @@ long rssi = 0;
 void IRAM_ATTR rainTick(void);
 void IRAM_ATTR windTick(void);
 
+// This function is called every time the device is connected to the Blynk.Cloud
+BLYNK_CONNECTED()
+{
+  Serial.println("Connected to Blynk.Cloud");
+}
+
 //===========================================
 // setup:
 //===========================================
@@ -222,10 +236,11 @@ void setup()
   BlinkLED(1);
   bootCount++;
 
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3D (for the 128x64)
+  display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS);  // initialize with the I2C addr 0x3D (for the 128x64)
   display.clearDisplay();
   display.setTextSize(1);
-  display.setTextColor(WHITE);
+  display.setTextColor(SSD1306_WHITE);
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
   printLocalTimeLCD();
   printADCLCD();
   display.printf("SSID: %s\n", ssid);
@@ -305,8 +320,13 @@ void processSensorUpdates(void)
   {
     SendDataMQTT(&environment);
   }
+#ifndef METRIC
   display.printf("Temp: %4.1f F\n", environment.temperatureF);
   display.printf("Pressure: %4.1f inHg\n", environment.barometricPressure);
+#else
+  display.printf("Temp: %4.1f C\n", environment.temperatureC);
+  display.printf("Pressure: %4.1f hPa\n", environment.barometricPressure);
+#endif
   display.display();
 }
 
