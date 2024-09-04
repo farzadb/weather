@@ -18,8 +18,12 @@ char pass[] = "password"; // WiFi Router password
 //===========================================
 //Blynk connection
 //===========================================
-char auth[] = "password";
+char auth[] = "";
 const char* server = "api.blynk.com";
+#define BLYNK_TEMPLATE_ID ""
+#define BLYNK_TEMPLATE_NAME ""
+//#define BLYNK_PRINT Serial // Defines the object that is used for printing
+//#define BLYNK_DEBUG        // Optional, this enables more detailed prints
 
 //===========================================
 //Thinkspeak connection
