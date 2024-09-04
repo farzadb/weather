@@ -1,3 +1,7 @@
+# This fork
+I have updated Blynk to work with the latest API (v2). 
+Also other small bug fixes and enhancements. 
+
 # Weather
 weather station scratch code
 This is a dev area for working the deep sleep integration on the opengreenenergy weatherstation on instructables.com
